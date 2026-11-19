@@ -1,0 +1,654 @@
+1
+00:00:00,500 --> 00:00:08,690
+Hello, I am Gagan N, USN 24BTRBT013, from
+CSE Blockchain Technology, semester five.
+
+2
+00:00:08,640 --> 00:00:12,902
+My mini project for the Corda Development
+course is topic number twelve:
+
+3
+00:00:12,902 --> 00:00:17,817
+Implementation of Secure Peer-to-Peer
+Communication between Enterprise Corda Nodes.
+
+4
+00:00:17,817 --> 00:00:23,083
+In this presentation I will explain the
+problem I chose, the Corda concepts I used,
+
+5
+00:00:23,083 --> 00:00:27,525
+and how I designed the network, the
+state, the contract and the flows.
+
+6
+00:00:27,525 --> 00:00:32,612
+Then I will show how I added end-to-end
+encryption and a trusted peer policy, and
+
+7
+00:00:32,612 --> 00:00:36,317
+the real results I measured on
+a running four-node network.
+
+8
+00:00:37,076 --> 00:00:39,370
+Let me start with the problem.
+
+9
+00:00:39,320 --> 00:00:44,880
+Companies share very sensitive information
+with each other, like purchase orders,
+
+10
+00:00:44,880 --> 00:00:47,351
+prices, contract terms and invoices.
+
+11
+00:00:47,351 --> 00:00:52,494
+Most of this still goes through e-mail,
+where messages sit in plain text on many
+
+12
+00:00:52,494 --> 00:00:57,830
+servers, can be forwarded to anyone, and
+give no strong proof of what was received.
+
+13
+00:00:57,830 --> 00:01:02,640
+Public blockchains are not the answer
+either, because they broadcast every
+
+14
+00:01:02,640 --> 00:01:04,330
+transaction to every node.
+
+15
+00:01:04,330 --> 00:01:09,892
+So I needed a way for two enterprises to
+talk privately, securely and verifiably,
+
+16
+00:01:09,892 --> 00:01:12,226
+and only with partners they trust.
+
+17
+00:01:12,980 --> 00:01:15,149
+These were my objectives.
+
+18
+00:01:15,099 --> 00:01:21,578
+First, I set up a Corda 4.12 network
+with a notary and three enterprise nodes.
+
+19
+00:01:21,578 --> 00:01:26,755
+Second, I designed a secure message
+state and a contract with strict rules.
+
+20
+00:01:26,755 --> 00:01:35,139
+Third, I added application-level
+encryption using an X25519 key exchange and
+
+21
+00:01:35,139 --> 00:01:36,463
+AES-256-GCM.
+
+22
+00:01:36,463 --> 00:01:40,797
+Fourth, I enforced a trusted-peer
+policy from configuration.
+
+23
+00:01:40,797 --> 00:01:45,764
+And finally, I proved everything with
+automated tests and with real evidence from
+
+24
+00:01:45,764 --> 00:01:50,302
+the running nodes, such as the
+certificates, the TLS handshake and latency
+
+25
+00:01:50,302 --> 00:01:51,099
+measurements.
+
+26
+00:01:51,836 --> 00:01:56,744
+I chose Corda because it was built for
+exactly this kind of business privacy.
+
+27
+00:01:56,694 --> 00:02:01,757
+In a public blockchain everyone sees
+everything and participants are anonymous.
+
+28
+00:02:01,757 --> 00:02:07,784
+In Corda every node has a known, certified
+legal identity, and data is shared only
+
+29
+00:02:07,784 --> 00:02:09,548
+on a need-to-know basis.
+
+30
+00:02:09,548 --> 00:02:14,642
+Transactions go directly from one node
+to another and are never broadcast.
+
+31
+00:02:14,642 --> 00:02:19,965
+The notary only confirms uniqueness and
+time, and does not need to see the content.
+
+32
+00:02:19,965 --> 00:02:25,069
+This model gave me a strong base, and
+I built extra layers on top of it.
+
+33
+00:02:25,820 --> 00:02:28,582
+These are the Corda concepts I used.
+
+34
+00:02:28,532 --> 00:02:32,668
+Nodes are the participants, each
+with its own vault database.
+
+35
+00:02:32,668 --> 00:02:36,553
+The network map tells every
+node where its peers are.
+
+36
+00:02:36,553 --> 00:02:41,075
+Flows describe the conversation between
+nodes, and sessions are the actual
+
+37
+00:02:41,075 --> 00:02:43,397
+point-to-point channels inside a flow.
+
+38
+00:02:43,397 --> 00:02:49,324
+Underneath, Corda uses the Artemis message
+broker and the AMQP protocol over TLS.
+
+39
+00:02:49,324 --> 00:02:53,972
+The notary prevents double spending and
+time-stamps transactions, and the vault
+
+40
+00:02:53,972 --> 00:02:56,678
+stores only the states
+a node participates in.
+
+41
+00:02:57,428 --> 00:02:59,409
+Here is my network.
+
+42
+00:02:59,359 --> 00:03:05,090
+I have four nodes, created with deployNodes:
+a non-validating notary, EnterpriseA in
+
+43
+00:03:05,090 --> 00:03:09,047
+Bengaluru, EnterpriseB in
+Mumbai and EnterpriseC in Delhi.
+
+44
+00:03:09,047 --> 00:03:14,338
+Each node has its own P2P
+port, RPC port and RPC user.
+
+45
+00:03:14,338 --> 00:03:18,536
+EnterpriseA and EnterpriseB
+exchange the secure messages.
+
+46
+00:03:18,536 --> 00:03:23,718
+EnterpriseC is a valid member of the network,
+but EnterpriseA does not trust it, so
+
+47
+00:03:23,718 --> 00:03:28,151
+I can show what happens when an
+untrusted peer tries to send a message.
+
+48
+00:03:28,892 --> 00:03:31,863
+I designed the security as four layers.
+
+49
+00:03:31,813 --> 00:03:37,824
+The first layer is transport: TLS 1.2 with
+mutual authentication between the Artemis
+
+50
+00:03:37,824 --> 00:03:38,396
+brokers.
+
+51
+00:03:38,396 --> 00:03:44,493
+The second is identity: both sender and
+receiver sign every message with their
+
+52
+00:03:44,493 --> 00:03:47,542
+Ed25519 keys, and the notary signs too.
+
+53
+00:03:47,542 --> 00:03:54,123
+The third layer is my own end-to-end
+encryption, AES-256-GCM with a fresh key for
+
+54
+00:03:54,123 --> 00:03:55,261
+every message.
+
+55
+00:03:55,261 --> 00:04:00,400
+The fourth is privacy: only the two parties
+are participants, and a trusted-peer
+
+56
+00:04:00,400 --> 00:04:02,584
+list controls who may talk at all.
+
+57
+00:04:03,332 --> 00:04:08,178
+This slide shows the certificate
+hierarchy that I extracted with keytool.
+
+58
+00:04:08,128 --> 00:04:13,232
+The Corda root CA signs the Doorman
+CA, which signs each node's CA.
+
+59
+00:04:13,232 --> 00:04:18,701
+The node CA then issues two certificates:
+the TLS certificate used on the P2P port,
+
+60
+00:04:18,701 --> 00:04:22,128
+and the legal identity
+certificate used for signing.
+
+61
+00:04:22,128 --> 00:04:26,761
+When I connected with openssl without
+a client certificate, the handshake was
+
+62
+00:04:26,761 --> 00:04:28,326
+rejected with alert forty.
+
+63
+00:04:28,326 --> 00:04:35,580
+With a valid network certificate it completed,
+using TLS 1.2 and an ECDHE ECDSA AES
+
+64
+00:04:35,580 --> 00:04:37,065
+GCM cipher suite.
+
+65
+00:04:37,820 --> 00:04:40,676
+My SecureMessageState is a linear state.
+
+66
+00:04:40,626 --> 00:04:46,117
+It stores the sender, the receiver, a
+subject, a SHA-256 content hash, the encrypted
+
+67
+00:04:46,117 --> 00:04:49,907
+payload, two wrapped key
+envelopes, the time and a status.
+
+68
+00:04:49,907 --> 00:04:53,439
+The participants are only
+the sender and the receiver.
+
+69
+00:04:53,439 --> 00:04:55,585
+The contract has two commands.
+
+70
+00:04:55,585 --> 00:05:01,659
+Send needs no inputs, one SENT output,
+different parties, a valid hash, exactly two
+
+71
+00:05:01,659 --> 00:05:04,074
+participants and both signatures.
+
+72
+00:05:04,074 --> 00:05:09,102
+Acknowledge changes SENT to ACKNOWLEDGED,
+keeps the content unchanged, and must be
+
+73
+00:05:09,102 --> 00:05:10,512
+signed by the receiver.
+
+74
+00:05:11,252 --> 00:05:14,598
+This sequence diagram shows my send flow.
+
+75
+00:05:14,548 --> 00:05:21,677
+First, EnterpriseA checks its trust list
+and sends an ephemeral X25519 public key
+
+76
+00:05:21,677 --> 00:05:23,173
+over the session.
+
+77
+00:05:23,173 --> 00:05:28,677
+EnterpriseB checks its own trust list,
+replies with its public key, and both sides
+
+78
+00:05:28,677 --> 00:05:30,287
+derive the same AES key.
+
+79
+00:05:30,287 --> 00:05:33,621
+A encrypts the body and
+builds the transaction.
+
+80
+00:05:33,621 --> 00:05:37,110
+B decrypts it and verifies
+the hash before signing.
+
+81
+00:05:37,110 --> 00:05:41,964
+Then the notary signs, and finality
+delivers the transaction only to B.
+
+82
+00:05:41,964 --> 00:05:45,464
+Later, B reads the message
+and acknowledges it.
+
+83
+00:05:46,220 --> 00:05:49,535
+Let me explain the
+encryption in more detail.
+
+84
+00:05:49,485 --> 00:05:57,253
+For every message, both nodes create fresh
+X25519 key pairs, and the shared secret
+
+85
+00:05:57,253 --> 00:06:01,422
+goes through HKDF to give a 256-bit AES key.
+
+86
+00:06:01,422 --> 00:06:06,714
+The body is encrypted with AES-GCM,
+which also detects any modification.
+
+87
+00:06:06,714 --> 00:06:11,839
+To decrypt later, each node wraps the key
+with a key derived from its own identity
+
+88
+00:06:11,839 --> 00:06:14,464
+key, so the vault never holds a plain key.
+
+89
+00:06:14,464 --> 00:06:19,245
+The trust policy is a simple list in
+each node's CorDapp configuration file.
+
+90
+00:06:19,988 --> 00:06:22,490
+This is the technology I used.
+
+91
+00:06:22,440 --> 00:06:28,846
+The CorDapp is written in Java on Corda
+4.12 Community Edition, running on JDK 17
+
+92
+00:06:28,846 --> 00:06:30,586
+and built with Gradle.
+
+93
+00:06:30,586 --> 00:06:36,148
+For testing I used the MockServices
+ledger DSL and MockNetwork with JUnit.
+
+94
+00:06:36,148 --> 00:06:40,419
+For the security evidence
+I used keytool and OpenSSL.
+
+95
+00:06:40,419 --> 00:06:45,660
+I wrote the helper scripts in Python,
+with Pillow and matplotlib for the images,
+
+96
+00:06:45,660 --> 00:06:50,836
+python-docx and python-pptx for the
+documents, and ffmpeg with edge-tts for the
+
+97
+00:06:50,836 --> 00:06:51,294
+videos.
+
+98
+00:06:52,052 --> 00:06:53,596
+Now the results.
+
+99
+00:06:53,546 --> 00:06:58,775
+I wrote fifteen contract tests and seven
+flow tests, and all twenty-two pass.
+
+100
+00:06:58,775 --> 00:07:03,956
+The contract tests check cases like a
+missing signature, three participants, a bad
+
+101
+00:07:03,956 --> 00:07:06,483
+hash and changed content on acknowledge.
+
+102
+00:07:06,483 --> 00:07:11,112
+The flow tests prove the five key
+properties: a send and acknowledge works,
+
+103
+00:07:11,112 --> 00:07:16,112
+EnterpriseC's vault stays empty, a tampered
+payload fails the integrity check, an
+
+104
+00:07:16,112 --> 00:07:20,556
+untrusted peer is rejected, and the
+stored payload really is ciphertext.
+
+105
+00:07:21,308 --> 00:07:25,029
+Here is the real transport
+evidence from my running nodes.
+
+106
+00:07:24,979 --> 00:07:30,229
+The server certificate subject was EnterpriseA
+in Bengaluru, and the full chain went
+
+107
+00:07:30,229 --> 00:07:31,729
+up to the Corda root CA.
+
+108
+00:07:31,729 --> 00:07:41,937
+The negotiated protocol was TLS 1.2 with
+the cipher ECDHE ECDSA AES128 GCM SHA256.
+
+109
+00:07:41,937 --> 00:07:46,937
+Without a client certificate, the node
+refused the handshake and logged an empty
+
+110
+00:07:46,937 --> 00:07:48,500
+client certificate chain.
+
+111
+00:07:48,500 --> 00:07:51,885
+TLS 1.3 was refused as well.
+
+112
+00:07:51,885 --> 00:07:56,979
+The node logs also show the AMQP
+bridges between A, B and the notary.
+
+113
+00:07:57,716 --> 00:08:03,077
+In the live run, EnterpriseA sent three
+encrypted messages to EnterpriseB, and B
+
+114
+00:08:03,077 --> 00:08:04,551
+sent one invoice back.
+
+115
+00:08:04,501 --> 00:08:09,553
+All four were acknowledged, and B decrypted
+the purchase order with a matching hash.
+
+116
+00:08:09,553 --> 00:08:14,890
+The vault counts show the privacy result:
+A and B have eight states each, and
+
+117
+00:08:14,890 --> 00:08:16,345
+EnterpriseC has zero.
+
+118
+00:08:16,345 --> 00:08:20,970
+EnterpriseC's attempt to message A
+was rejected as an untrusted peer.
+
+119
+00:08:20,970 --> 00:08:26,984
+Twenty pings averaged about 121 milliseconds,
+and the key exchange and encryption
+
+120
+00:08:26,984 --> 00:08:30,324
+added only about one
+millisecond per message.
+
+121
+00:08:31,076 --> 00:08:36,097
+To sum up the advantages: the content
+stays protected even if the database or a
+
+122
+00:08:36,097 --> 00:08:41,435
+backup leaks, uninvolved nodes store nothing,
+both parties sign so nobody can deny a
+
+123
+00:08:41,435 --> 00:08:45,057
+message, tampering is detected,
+and the cost is very low.
+
+124
+00:08:45,007 --> 00:08:47,268
+There are also limitations.
+
+125
+00:08:47,268 --> 00:08:52,570
+I used development certificates and a single
+notary, the keys are in keystore files
+
+126
+00:08:52,570 --> 00:08:57,935
+and not in a hardware security module, there
+is no key rotation yet, and the subject
+
+127
+00:08:57,935 --> 00:08:59,341
+line is not encrypted.
+
+128
+00:09:00,092 --> 00:09:05,321
+In conclusion, I built a working CorDapp
+in which confidential messages travel over
+
+129
+00:09:05,321 --> 00:09:10,549
+mutual TLS, are encrypted end-to-end, are
+signed by both parties and notarised, and
+
+130
+00:09:10,549 --> 00:09:13,636
+are readable only by the
+sender and the receiver.
+
+131
+00:09:13,586 --> 00:09:19,270
+All tests pass, and the live network
+confirmed privacy, integrity and the trust
+
+132
+00:09:19,270 --> 00:09:19,773
+policy.
+
+133
+00:09:19,773 --> 00:09:25,525
+In future I would like to move the keys
+into an HSM, add key rotation, and port the
+
+134
+00:09:25,525 --> 00:09:29,544
+design to Corda 5, where the
+MGM manages group membership.
+
+135
+00:09:30,284 --> 00:09:32,994
+Thank you for listening to my presentation.
+
+136
+00:09:32,944 --> 00:09:40,920
+The main references I used were the Corda
+4.12 documentation, the Corda technical
+
+137
+00:09:40,920 --> 00:09:48,601
+white paper, and the standards for X25519,
+HKDF, AES-GCM, SHA-256 and TLS 1.2.
+
+138
+00:09:48,601 --> 00:09:54,059
+The full code, the test results and all the
+evidence files are in my project folder.
+
+139
+00:09:54,059 --> 00:09:58,799
+I am happy to take any questions about
+the design or the implementation.
+

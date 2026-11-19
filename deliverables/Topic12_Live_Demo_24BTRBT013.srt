@@ -1,0 +1,292 @@
+1
+00:00:01,100 --> 00:00:07,849
+Hello, I am Gagan N, USN 24BTRBT013,
+and this is the live demonstration of my
+
+2
+00:00:07,849 --> 00:00:14,336
+project, Secure Peer-to-Peer Communication
+between Enterprise Corda Nodes.
+
+3
+00:00:14,286 --> 00:00:18,452
+Everything you see here is
+running live on my laptop.
+
+4
+00:00:18,452 --> 00:00:24,018
+First, here is the project structure:
+the contracts module with my state and
+
+5
+00:00:24,018 --> 00:00:29,657
+contract, the workflows module with my
+flows, the crypto helper and the trust
+
+6
+00:00:29,657 --> 00:00:32,000
+policy, and the RPC demo client.
+
+7
+00:00:33,713 --> 00:00:36,175
+Next, I run the tests.
+
+8
+00:00:36,125 --> 00:00:40,029
+Gradle runs the fifteen
+contract tests live now.
+
+9
+00:00:40,029 --> 00:00:45,869
+The seven MockNetwork flow tests were run
+in full just before this recording, so
+
+10
+00:00:45,869 --> 00:00:48,351
+Gradle reports them as up to date.
+
+11
+00:00:48,351 --> 00:00:54,271
+The summary shows all twenty-two tests
+passing, including the privacy, integrity,
+
+12
+00:00:54,271 --> 00:00:56,755
+trust policy and ciphertext tests.
+
+13
+00:01:23,253 --> 00:01:29,490
+Now I start the four Corda nodes: the
+notary, EnterpriseA, EnterpriseB and
+
+14
+00:01:29,490 --> 00:01:30,501
+EnterpriseC.
+
+15
+00:01:30,451 --> 00:01:37,213
+Each node runs headless as its own Java
+process, with its own P2P and RPC ports, and
+
+16
+00:01:37,213 --> 00:01:41,963
+my script waits for the started
+up line in each node's log.
+
+17
+00:01:41,963 --> 00:01:47,777
+Starting a Corda node takes around a
+minute, because it loads the CorDapps, opens
+
+18
+00:01:47,777 --> 00:01:53,807
+its vault database, starts the Artemis
+message broker and registers with the network
+
+19
+00:01:53,807 --> 00:01:54,094
+map.
+
+20
+00:01:54,094 --> 00:02:00,550
+While they start, remember my trust policy:
+EnterpriseA trusts only EnterpriseB, so
+
+21
+00:02:00,550 --> 00:02:03,272
+EnterpriseC will be rejected later.
+
+22
+00:02:52,937 --> 00:02:55,339
+All four nodes are up.
+
+23
+00:02:55,289 --> 00:03:01,955
+Here is the network map as EnterpriseA
+sees it: three enterprise nodes and the
+
+24
+00:03:01,955 --> 00:03:07,766
+non-validating notary, each with
+its X.500 name and its P2P address.
+
+25
+00:03:10,559 --> 00:03:12,592
+Now the certificates.
+
+26
+00:03:12,542 --> 00:03:16,697
+I run keytool on
+EnterpriseA's three keystores.
+
+27
+00:03:16,697 --> 00:03:22,011
+The TLS key store holds a chain of
+four certificates, from the node's TLS
+
+28
+00:03:22,011 --> 00:03:27,471
+certificate through the node CA and
+the Doorman CA up to the Corda root CA.
+
+29
+00:03:27,471 --> 00:03:34,637
+The identity key is Ed25519, and the
+trust store contains only the root CA.
+
+30
+00:03:36,387 --> 00:03:44,229
+Next, I test the P2P port with openssl,
+using TLS 1.2 and no client certificate.
+
+31
+00:03:44,179 --> 00:03:50,144
+The server presents EnterpriseA's certificate
+and asks for a client certificate.
+
+32
+00:03:50,144 --> 00:03:54,644
+Because I have none, the
+handshake fails with alert forty.
+
+33
+00:03:54,644 --> 00:04:01,727
+With a real network certificate the
+handshake completes, and TLS 1.3 is refused.
+
+34
+00:04:01,727 --> 00:04:04,775
+So mutual TLS is enforced.
+
+35
+00:04:06,450 --> 00:04:08,388
+Now the main part.
+
+36
+00:04:08,338 --> 00:04:14,459
+EnterpriseA sends three confidential
+messages to EnterpriseB, and B sends one
+
+37
+00:04:14,459 --> 00:04:15,493
+invoice back.
+
+38
+00:04:15,493 --> 00:04:23,379
+For each message, the flow runs an X25519
+key exchange over the session, encrypts
+
+39
+00:04:23,379 --> 00:04:31,362
+the body with AES-256-GCM, collects both
+signatures and notarises the transaction.
+
+40
+00:04:31,362 --> 00:04:36,005
+The table shows that only
+ciphertext is stored on the ledger.
+
+41
+00:04:38,855 --> 00:04:42,864
+Next, each receiver
+acknowledges its messages.
+
+42
+00:04:42,814 --> 00:04:49,077
+Before acknowledging, the receiver decrypts
+the message and verifies its SHA-256
+
+43
+00:04:49,077 --> 00:04:49,469
+hash.
+
+44
+00:04:49,469 --> 00:04:52,921
+Then EnterpriseB reads the purchase order.
+
+45
+00:04:52,921 --> 00:04:58,066
+The decrypted body appears, and the hash
+on the ledger matches the hash of the
+
+46
+00:04:58,066 --> 00:05:01,100
+decrypted text, so the
+integrity check passes.
+
+47
+00:05:02,793 --> 00:05:05,184
+This is the privacy proof.
+
+48
+00:05:05,134 --> 00:05:11,233
+EnterpriseA and EnterpriseB each have eight
+message states: the consumed SENT states
+
+49
+00:05:11,233 --> 00:05:13,193
+plus the ACKNOWLEDGED ones.
+
+50
+00:05:13,193 --> 00:05:15,681
+EnterpriseC has zero.
+
+51
+00:05:15,681 --> 00:05:21,598
+It was never a participant, so it never
+received any of these transactions.
+
+52
+00:05:23,271 --> 00:05:27,745
+Now EnterpriseC tries to send
+a message to EnterpriseA.
+
+53
+00:05:27,695 --> 00:05:32,923
+EnterpriseA's responder flow checks
+its trusted peers list, does not find
+
+54
+00:05:32,923 --> 00:05:36,790
+EnterpriseC, and throws the
+exception: Untrusted peer.
+
+55
+00:05:36,790 --> 00:05:39,099
+No state is created.
+
+56
+00:05:45,685 --> 00:05:48,992
+Next, I measure the P2P latency.
+
+57
+00:05:48,942 --> 00:05:54,304
+PingPeerFlow does twenty send and
+receive round trips from EnterpriseA to
+
+58
+00:05:54,304 --> 00:06:00,474
+EnterpriseB over the TLS link, and the table
+shows the average, minimum, maximum and
+
+59
+00:06:00,474 --> 00:06:02,751
+median latency in milliseconds.
+
+60
+00:06:07,504 --> 00:06:10,740
+To finish, I stop all four nodes.
+
+61
+00:06:10,690 --> 00:06:16,666
+That completes my live demonstration of
+secure, private and verifiable peer-to-peer
+
+62
+00:06:16,666 --> 00:06:19,618
+messaging between enterprise Corda nodes.
+
+63
+00:06:19,618 --> 00:06:21,666
+Thank you for watching.
+
