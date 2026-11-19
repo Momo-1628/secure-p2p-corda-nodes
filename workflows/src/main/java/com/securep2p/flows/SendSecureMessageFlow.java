@@ -25,7 +25,7 @@ import java.util.Collections;
 /**
  * Sends a confidential message to one counterparty.
  *
- *   1. trust check (our own allow-list)          4. build tx (Send, time window) and sign
+ *   1. trust check (this node's allow-list)     4. build tx (Send, time window) and sign
  *   2. X25519 key exchange over the session      5. CollectSignaturesFlow (receiver verifies + signs)
  *   3. AES-256-GCM encrypt + SHA-256 hash        6. FinalityFlow -> notary -> receiver only
  *
@@ -144,14 +144,14 @@ public class SendSecureMessageFlow extends FlowLogic<SignedTransaction> {
             Arrays.fill(messageKey, (byte) 0);
             session.send(new KeyExchangeMessages.Reply(eph[0], ourEnvelope));
 
-            // 3. Verify what we are asked to sign: decrypt it ourselves and check the SHA-256.
+            // 3. Verify the transaction before signing: decrypt it locally and check the SHA-256.
             SignTransactionFlow signFlow = new SignTransactionFlow(session) {
                 @Override
                 protected void checkTransaction(@NotNull SignedTransaction stx) throws FlowException {
                     ContractState output = stx.getTx().getOutputs().get(0).getData();
                     if (!(output instanceof SecureMessageState)) throw new FlowException("Not a SecureMessageState");
                     SecureMessageState s = (SecureMessageState) output;
-                    if (!s.getReceiver().equals(me)) throw new FlowException("We are not the receiver");
+                    if (!s.getReceiver().equals(me)) throw new FlowException("This node is not the receiver");
                     if (!s.getSender().equals(sender)) throw new FlowException("Sender does not match session counterparty");
                     if (!s.getLinearId().equals(expectedId)) throw new FlowException("linearId does not match key exchange");
                     if (!s.getReceiverKeyEnvelope().equals(ourEnvelope)) throw new FlowException("Receiver key envelope was altered");
