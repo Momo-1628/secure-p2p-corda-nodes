@@ -6,7 +6,7 @@
 TEST 1: TLS 1.2 handshake WITHOUT a client certificate
   $ openssl s_client -connect localhost:10005 -showcerts -tls1_2
   exit code: 1
-  | CONNECTED(000001C4)
+  | CONNECTED(000001B0)
   |  0 s:C=IN, L=Bengaluru, O=EnterpriseA
   |    i:C=IN, L=Bengaluru, O=EnterpriseA
   |  1 s:C=IN, L=Bengaluru, O=EnterpriseA
@@ -34,12 +34,12 @@ TEST 1: TLS 1.2 handshake WITHOUT a client certificate
   |     Verify return code: 26 (unsuitable certificate purpose)
   | verify error:num=19:self-signed certificate in certificate chain
   | verify error:num=26:unsuitable certificate purpose
-  | 809A0000:error:0A000410:SSL routines:ssl3_read_bytes:ssl/tls alert handshake failure:../openssl-3.2.4/ssl/record/rec_layer_s3.c:909:SSL alert number 40
+  | E0A10000:error:0A000410:SSL routines:ssl3_read_bytes:ssl/tls alert handshake failure:../openssl-3.2.4/ssl/record/rec_layer_s3.c:909:SSL alert number 40
 
 TEST 2: TLS 1.2 handshake WITH EnterpriseB's node TLS certificate (signed by the network's Doorman CA)
   $ openssl s_client -connect localhost:10005 -showcerts -tls1_2 -cert <B tls cert> -key <B tls key> -cert_chain <B node CA, doorman, root>
   exit code: 0
-  | CONNECTED(000001D8)
+  | CONNECTED(000001B4)
   |  0 s:C=IN, L=Bengaluru, O=EnterpriseA
   |    i:C=IN, L=Bengaluru, O=EnterpriseA
   |  1 s:C=IN, L=Bengaluru, O=EnterpriseA
@@ -58,7 +58,7 @@ TEST 2: TLS 1.2 handshake WITH EnterpriseB's node TLS certificate (signed by the
   | Peer signing digest: SHA256
   | Peer signature type: ECDSA
   | Server Temp Key: X25519, 253 bits
-  | SSL handshake has read 7646 bytes and written 2700 bytes
+  | SSL handshake has read 7644 bytes and written 2699 bytes
   | Verification error: unsuitable certificate purpose
   | New, TLSv1.2, Cipher is ECDHE-ECDSA-AES128-GCM-SHA256
   | Secure Renegotiation IS supported
@@ -71,16 +71,16 @@ TEST 2: TLS 1.2 handshake WITH EnterpriseB's node TLS certificate (signed by the
 TEST 3: TLS 1.3 attempt (protocol version policy)
   $ openssl s_client -connect localhost:10005 -showcerts -tls1_3
   exit code: 1
-  | CONNECTED(000001DC)
+  | CONNECTED(000001B8)
   | no peer certificate available
   | SSL handshake has read 7 bytes and written 236 bytes
   | New, (NONE), Cipher is (NONE)
   | Verify return code: 0 (ok)
-  | B8320000:error:0A00042E:SSL routines:ssl3_read_bytes:tlsv1 alert protocol version:../openssl-3.2.4/ssl/record/rec_layer_s3.c:909:SSL alert number 70
+  | AC6F0000:error:0A00042E:SSL routines:ssl3_read_bytes:tlsv1 alert protocol version:../openssl-3.2.4/ssl/record/rec_layer_s3.c:909:SSL alert number 70
 
 SERVER SIDE: EnterpriseA node log lines produced by the tests above
-  | [WARN] 00:20:09+0530 [P2PServer-netty-9] core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55471: javax.net.ssl.SSLHandshakeException: (handshake_failure) Empty client certificate chain.
-  | [WARN] 00:20:11+0530 [P2PServer-netty-11] core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55475: javax.net.ssl.SSLHandshakeException: (protocol_version) The client supported protocol versions [TLSv1.3] are not accepted by serv
+  | [WARN] 01:21:00+0530 [P2PServer-netty-4] core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:54011: javax.net.ssl.SSLHandshakeException: (handshake_failure) Empty client certificate chain.
+  | [WARN] 01:21:03+0530 [P2PServer-netty-6] core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:54013: javax.net.ssl.SSLHandshakeException: (protocol_version) The client supported protocol versions [TLSv1.3] are not accepted by serve
 
 ====================================================================================================
   SUMMARY

@@ -13,40 +13,40 @@ Gradle output:
   > Task :contracts:test
   > Task :workflows:compileTestJava
   > Task :workflows:test
-  BUILD SUCCESSFUL in 3m 28s
+  BUILD SUCCESSFUL in 6m 31s
   15 actionable tasks: 15 executed
 
 Suite                        Test                                     Result   Time s
 --------------------------------------------------------------------------------------------------------
-SecureMessageContractTests   validAcknowledgeVerifies                 PASS      12.59
-SecureMessageContractTests   acknowledgeSignedOnlyBySenderFails       PASS       0.59
-SecureMessageContractTests   acknowledgeAlreadyAcknowledgedFails      PASS       0.66
-SecureMessageContractTests   acknowledgeWithChangedContentFails       PASS       0.79
-SecureMessageContractTests   sendToSelfFails                          PASS       0.63
-SecureMessageContractTests   sendMissingReceiverSignatureFails        PASS       0.38
-SecureMessageContractTests   validSendVerifies                        PASS       0.36
-SecureMessageContractTests   sendWithThreeParticipantsFails           PASS       0.35
-SecureMessageContractTests   sendMissingSenderSignatureFails          PASS       0.40
-SecureMessageContractTests   acknowledgeWithChangedHashFails          PASS       0.51
-SecureMessageContractTests   sendWithBadHashFails                     PASS       0.25
-SecureMessageContractTests   sendWithEmptySubjectFails                PASS       0.26
-SecureMessageContractTests   sendWithAcknowledgedStatusFails          PASS       0.29
-SecureMessageContractTests   sendWithoutTimeWindowFails               PASS       0.26
-SecureMessageContractTests   sendWithInputFails                       PASS       0.32
-SecureMessageFlowTests       untrustedPeerIsRejected                  PASS      84.36
+SecureMessageContractTests   validAcknowledgeVerifies                 PASS      14.60
+SecureMessageContractTests   acknowledgeSignedOnlyBySenderFails       PASS       1.61
+SecureMessageContractTests   acknowledgeAlreadyAcknowledgedFails      PASS       1.01
+SecureMessageContractTests   acknowledgeWithChangedContentFails       PASS       0.94
+SecureMessageContractTests   sendToSelfFails                          PASS       0.78
+SecureMessageContractTests   sendMissingReceiverSignatureFails        PASS       0.68
+SecureMessageContractTests   validSendVerifies                        PASS       0.62
+SecureMessageContractTests   sendWithThreeParticipantsFails           PASS       0.57
+SecureMessageContractTests   sendMissingSenderSignatureFails          PASS       0.58
+SecureMessageContractTests   acknowledgeWithChangedHashFails          PASS       0.64
+SecureMessageContractTests   sendWithBadHashFails                     PASS       0.55
+SecureMessageContractTests   sendWithEmptySubjectFails                PASS       0.62
+SecureMessageContractTests   sendWithAcknowledgedStatusFails          PASS       0.86
+SecureMessageContractTests   sendWithoutTimeWindowFails               PASS       0.63
+SecureMessageContractTests   sendWithInputFails                       PASS       0.76
+SecureMessageFlowTests       untrustedPeerIsRejected                  PASS     189.29
                                -> (4) TRUST POLICY: C->A rejected 'Untrusted peer'
-SecureMessageFlowTests       pingReturnsLatency                       PASS      13.79
+SecureMessageFlowTests       pingReturnsLatency                       PASS      23.35
                                -> PingPeerFlow returns a P2P latency
-SecureMessageFlowTests       cannotAcknowledgeTwice                   PASS      15.32
+SecureMessageFlowTests       cannotAcknowledgeTwice                   PASS      30.84
                                -> double acknowledgement is prevented
-SecureMessageFlowTests       sendAndAcknowledgeWorks                  PASS      11.24
+SecureMessageFlowTests       sendAndAcknowledgeWorks                  PASS      24.83
                                -> (1) A->B send + acknowledge works; both can decrypt
-SecureMessageFlowTests       storedPayloadIsCiphertext                PASS      12.45
+SecureMessageFlowTests       storedPayloadIsCiphertext                PASS      20.63
                                -> (5) stored encryptedPayload != plaintext
-SecureMessageFlowTests       thirdPartyVaultIsEmpty                   PASS      10.29
+SecureMessageFlowTests       thirdPartyVaultIsEmpty                   PASS      16.97
                                -> (2) PRIVACY: EnterpriseC vault = 0, C cannot read
-SecureMessageFlowTests       tamperedPayloadFailsIntegrityCheck       PASS      11.57
+SecureMessageFlowTests       tamperedPayloadFailsIntegrityCheck       PASS       6.53
                                -> (3) INTEGRITY: tampered payload / hash rejected
 --------------------------------------------------------------------------------------------------------
-TOTAL: 22 tests   PASSED: 22   FAILED: 0   (contract tests: 15, flow tests: 7)   wall time: 208 s
+TOTAL: 22 tests   PASSED: 22   FAILED: 0   (contract tests: 15, flow tests: 7)   wall time: 392 s
 RESULT: ALL TESTS PASSED

@@ -83,3 +83,7 @@ video/work/
 ppt/render/
 *.pid
 __pycache__/
+# large media (kept locally in deliverables/, not pushed)
+video/
+deliverables/*.mp4
+ppt/*.pdf

@@ -4,86 +4,86 @@
 ==============================================================================================================
 
 --------------------------------------------------------------------------------------------------------------
-NODE: EnterpriseA   (28 link events)
+NODE: EnterpriseA   (25 link events)
 --------------------------------------------------------------------------------------------------------------
-  2026-11-19T18:48:26,062Z messaging.ArtemisMessagingServer. - P2P messaging server listening on 0.0.0.0:10005
-  2026-11-19T18:49:03,702Z core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55448: javax.net.ssl.SSLHandshakeException: (handshake_failure) Empty client certificate chain.
-  2026-11-19T18:49:04,459Z core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55449: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested tar
-  2026-11-19T18:49:04,695Z core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55450: javax.net.ssl.SSLHandshakeException: (protocol_version) The client supported protocol versions [TLSv1.3] are not acc
-  2026-11-19T18:49:16,099Z core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55455: java.security.cert.CertPathValidatorException: CA key usage check failed: keyCertSign bit is not set.
-  2026-11-19T18:50:09,241Z core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55471: javax.net.ssl.SSLHandshakeException: (handshake_failure) Empty client certificate chain.
-  2026-11-19T18:50:11,267Z core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55475: javax.net.ssl.SSLHandshakeException: (protocol_version) The client supported protocol versions [TLSv1.3] are not acc
-  2026-11-19T18:50:31,370Z bridging.AMQPBridgeManager. - Create new AMQP bridge
-  2026-11-19T18:50:31,384Z netty.AMQPClient. - Connect to: localhost:10008
-  2026-11-19T18:50:31,630Z netty.AMQPClient. - Connected to localhost:10008, Local address: /127.0.0.1:55481
-  2026-11-19T18:50:31,668Z netty.AMQPChannelHandler. - New client connection 18661222 from localhost/127.0.0.1:10008 to /127.0.0.1:55481
-  2026-11-19T18:50:31,849Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseB, L=Mumbai, C=IN, requested server name: 6c2a65cdb18404af540f58819b3a7dd2.corda.net.
-  2026-11-19T18:50:32,103Z bridging.AMQPBridgeManager. - Bridge Connected
-  2026-11-19T18:50:32,131Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
-  2026-11-19T18:50:39,679Z bridging.AMQPBridgeManager. - Create new AMQP bridge
-  2026-11-19T18:50:39,679Z netty.AMQPClient. - Connect to: localhost:10002
-  2026-11-19T18:50:39,684Z netty.AMQPClient. - Connected to localhost:10002, Local address: /127.0.0.1:62908
-  2026-11-19T18:50:39,686Z netty.AMQPChannelHandler. - New client connection a44a061f from localhost/127.0.0.1:10002 to /127.0.0.1:62908
-  2026-11-19T18:50:39,782Z netty.AMQPChannelHandler. - Handshake completed with subject: O=Notary, L=Bengaluru, C=IN, requested server name: 7e9ec98dd88ecbc96952bbc6b50b3306.corda.net.
-  2026-11-19T18:50:39,783Z bridging.AMQPBridgeManager. - Bridge Connected
-  2026-11-19T18:50:39,784Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
-  2026-11-19T18:50:54,643Z bridging.AMQPBridgeManager. - Create new AMQP bridge
-  2026-11-19T18:50:54,643Z netty.AMQPClient. - Connect to: localhost:10011
-  2026-11-19T18:50:54,648Z netty.AMQPClient. - Connected to localhost:10011, Local address: /127.0.0.1:58604
-  2026-11-19T18:50:54,649Z netty.AMQPChannelHandler. - New client connection a721466a from localhost/127.0.0.1:10011 to /127.0.0.1:58604
-  2026-11-19T18:50:54,692Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseC, L=Delhi, C=IN, requested server name: 0c6d8060d0c84e09cc081d5f1385f167.corda.net.
-  2026-11-19T18:50:54,693Z bridging.AMQPBridgeManager. - Bridge Connected
-  2026-11-19T18:50:54,695Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:49:59,579Z messaging.ArtemisMessagingServer. - P2P messaging server listening on 0.0.0.0:10005
+  2026-11-19T19:51:00,397Z core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:54011: javax.net.ssl.SSLHandshakeException: (handshake_failure) Empty client certificate chain.
+  2026-11-19T19:51:03,051Z core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:54013: javax.net.ssl.SSLHandshakeException: (protocol_version) The client supported protocol versions [TLSv1.3] are not acc
+  2026-11-19T19:51:39,227Z bridging.AMQPBridgeManager. - Create new AMQP bridge
+  2026-11-19T19:51:39,237Z netty.AMQPClient. - Connect to: localhost:10008
+  2026-11-19T19:51:39,434Z netty.AMQPClient. - Connected to localhost:10008, Local address: /127.0.0.1:55520
+  2026-11-19T19:51:39,464Z netty.AMQPChannelHandler. - New client connection aa56ad9e from localhost/127.0.0.1:10008 to /127.0.0.1:55520
+  2026-11-19T19:51:39,563Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseB, L=Mumbai, C=IN, requested server name: 6c2a65cdb18404af540f58819b3a7dd2.corda.net.
+  2026-11-19T19:51:39,733Z bridging.AMQPBridgeManager. - Bridge Connected
+  2026-11-19T19:51:39,749Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:51:46,300Z bridging.AMQPBridgeManager. - Create new AMQP bridge
+  2026-11-19T19:51:46,301Z netty.AMQPClient. - Connect to: localhost:10002
+  2026-11-19T19:51:46,308Z netty.AMQPClient. - Connected to localhost:10002, Local address: /127.0.0.1:51497
+  2026-11-19T19:51:46,311Z netty.AMQPChannelHandler. - New client connection a7780e0a from localhost/127.0.0.1:10002 to /127.0.0.1:51497
+  2026-11-19T19:51:46,432Z netty.AMQPChannelHandler. - Handshake completed with subject: O=Notary, L=Bengaluru, C=IN, requested server name: 7e9ec98dd88ecbc96952bbc6b50b3306.corda.net.
+  2026-11-19T19:51:46,433Z bridging.AMQPBridgeManager. - Bridge Connected
+  2026-11-19T19:51:46,434Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:52:58,105Z bridging.AMQPBridgeManager. - Create new AMQP bridge
+  2026-11-19T19:52:58,105Z netty.AMQPClient. - Connect to: localhost:10011
+  2026-11-19T19:52:58,115Z netty.AMQPClient. - Connected to localhost:10011, Local address: /127.0.0.1:58984
+  2026-11-19T19:52:58,118Z netty.AMQPChannelHandler. - New client connection af78e6fd from localhost/127.0.0.1:10011 to /127.0.0.1:58984
+  2026-11-19T19:52:58,198Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseC, L=Delhi, C=IN, requested server name: 0c6d8060d0c84e09cc081d5f1385f167.corda.net.
+  2026-11-19T19:52:58,199Z bridging.AMQPBridgeManager. - Bridge Connected
+  2026-11-19T19:52:58,201Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:53:30,095Z bridging.AMQPBridgeManager. - Bridge Disconnected
 
 --------------------------------------------------------------------------------------------------------------
-NODE: EnterpriseB   (15 link events)
+NODE: EnterpriseB   (17 link events)
 --------------------------------------------------------------------------------------------------------------
-  2026-11-19T18:48:26,373Z messaging.ArtemisMessagingServer. - P2P messaging server listening on 0.0.0.0:10008
-  2026-11-19T18:50:33,819Z bridging.AMQPBridgeManager. - Create new AMQP bridge
-  2026-11-19T18:50:33,824Z netty.AMQPClient. - Connect to: localhost:10005
-  2026-11-19T18:50:33,932Z netty.AMQPClient. - Connected to localhost:10005, Local address: /127.0.0.1:51501
-  2026-11-19T18:50:33,952Z netty.AMQPChannelHandler. - New client connection bcdaf160 from localhost/127.0.0.1:10005 to /127.0.0.1:51501
-  2026-11-19T18:50:34,016Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseA, L=Bengaluru, C=IN, requested server name: 4000f94e5e5957154e34e4df53536828.corda.net.
-  2026-11-19T18:50:34,100Z bridging.AMQPBridgeManager. - Bridge Connected
-  2026-11-19T18:50:34,123Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
-  2026-11-19T18:50:47,497Z bridging.AMQPBridgeManager. - Create new AMQP bridge
-  2026-11-19T18:50:47,497Z netty.AMQPClient. - Connect to: localhost:10002
-  2026-11-19T18:50:47,502Z netty.AMQPClient. - Connected to localhost:10002, Local address: /127.0.0.1:58601
-  2026-11-19T18:50:47,504Z netty.AMQPChannelHandler. - New client connection 68922d17 from localhost/127.0.0.1:10002 to /127.0.0.1:58601
-  2026-11-19T18:50:47,563Z netty.AMQPChannelHandler. - Handshake completed with subject: O=Notary, L=Bengaluru, C=IN, requested server name: 7e9ec98dd88ecbc96952bbc6b50b3306.corda.net.
-  2026-11-19T18:50:47,564Z bridging.AMQPBridgeManager. - Bridge Connected
-  2026-11-19T18:50:47,565Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:50:00,589Z messaging.ArtemisMessagingServer. - P2P messaging server listening on 0.0.0.0:10008
+  2026-11-19T19:51:40,898Z bridging.AMQPBridgeManager. - Create new AMQP bridge
+  2026-11-19T19:51:40,904Z netty.AMQPClient. - Connect to: localhost:10005
+  2026-11-19T19:51:41,029Z netty.AMQPClient. - Connected to localhost:10005, Local address: /127.0.0.1:55521
+  2026-11-19T19:51:41,053Z netty.AMQPChannelHandler. - New client connection 144f3840 from localhost/127.0.0.1:10005 to /127.0.0.1:55521
+  2026-11-19T19:51:41,115Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseA, L=Bengaluru, C=IN, requested server name: 4000f94e5e5957154e34e4df53536828.corda.net.
+  2026-11-19T19:51:41,208Z bridging.AMQPBridgeManager. - Bridge Connected
+  2026-11-19T19:51:41,233Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:51:53,675Z bridging.AMQPBridgeManager. - Create new AMQP bridge
+  2026-11-19T19:51:53,675Z netty.AMQPClient. - Connect to: localhost:10002
+  2026-11-19T19:51:53,680Z netty.AMQPClient. - Connected to localhost:10002, Local address: /127.0.0.1:51503
+  2026-11-19T19:51:53,682Z netty.AMQPChannelHandler. - New client connection 626a4179 from localhost/127.0.0.1:10002 to /127.0.0.1:51503
+  2026-11-19T19:51:53,750Z netty.AMQPChannelHandler. - Handshake completed with subject: O=Notary, L=Bengaluru, C=IN, requested server name: 7e9ec98dd88ecbc96952bbc6b50b3306.corda.net.
+  2026-11-19T19:51:53,751Z bridging.AMQPBridgeManager. - Bridge Connected
+  2026-11-19T19:51:53,752Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:53:30,094Z bridging.AMQPBridgeManager. - Bridge Disconnected
+  2026-11-19T19:53:32,040Z bridging.AMQPBridgeManager. - Bridge Disconnected
 
 --------------------------------------------------------------------------------------------------------------
-NODE: EnterpriseC   (8 link events)
+NODE: EnterpriseC   (9 link events)
 --------------------------------------------------------------------------------------------------------------
-  2026-11-19T18:48:26,004Z messaging.ArtemisMessagingServer. - P2P messaging server listening on 0.0.0.0:10011
-  2026-11-19T18:50:53,869Z bridging.AMQPBridgeManager. - Create new AMQP bridge
-  2026-11-19T18:50:53,876Z netty.AMQPClient. - Connect to: localhost:10005
-  2026-11-19T18:50:54,040Z netty.AMQPClient. - Connected to localhost:10005, Local address: /127.0.0.1:58603
-  2026-11-19T18:50:54,063Z netty.AMQPChannelHandler. - New client connection 0827f3d5 from localhost/127.0.0.1:10005 to /127.0.0.1:58603
-  2026-11-19T18:50:54,153Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseA, L=Bengaluru, C=IN, requested server name: 4000f94e5e5957154e34e4df53536828.corda.net.
-  2026-11-19T18:50:54,411Z bridging.AMQPBridgeManager. - Bridge Connected
-  2026-11-19T18:50:54,432Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:49:57,355Z messaging.ArtemisMessagingServer. - P2P messaging server listening on 0.0.0.0:10011
+  2026-11-19T19:52:57,315Z bridging.AMQPBridgeManager. - Create new AMQP bridge
+  2026-11-19T19:52:57,327Z netty.AMQPClient. - Connect to: localhost:10005
+  2026-11-19T19:52:57,506Z netty.AMQPClient. - Connected to localhost:10005, Local address: /127.0.0.1:58983
+  2026-11-19T19:52:57,538Z netty.AMQPChannelHandler. - New client connection 986466c5 from localhost/127.0.0.1:10005 to /127.0.0.1:58983
+  2026-11-19T19:52:57,648Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseA, L=Bengaluru, C=IN, requested server name: 4000f94e5e5957154e34e4df53536828.corda.net.
+  2026-11-19T19:52:57,864Z bridging.AMQPBridgeManager. - Bridge Connected
+  2026-11-19T19:52:57,883Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:53:32,060Z bridging.AMQPBridgeManager. - Bridge Disconnected
 
 --------------------------------------------------------------------------------------------------------------
 NODE: Notary   (15 link events)
 --------------------------------------------------------------------------------------------------------------
-  2026-11-19T18:48:20,754Z messaging.ArtemisMessagingServer. - P2P messaging server listening on 0.0.0.0:10002
-  2026-11-19T18:50:40,888Z bridging.AMQPBridgeManager. - Create new AMQP bridge
-  2026-11-19T18:50:40,895Z netty.AMQPClient. - Connect to: localhost:10005
-  2026-11-19T18:50:41,004Z netty.AMQPClient. - Connected to localhost:10005, Local address: /127.0.0.1:62909
-  2026-11-19T18:50:41,031Z netty.AMQPChannelHandler. - New client connection 79caf2ba from localhost/127.0.0.1:10005 to /127.0.0.1:62909
-  2026-11-19T18:50:41,122Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseA, L=Bengaluru, C=IN, requested server name: 4000f94e5e5957154e34e4df53536828.corda.net.
-  2026-11-19T18:50:41,212Z bridging.AMQPBridgeManager. - Bridge Connected
-  2026-11-19T18:50:41,236Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
-  2026-11-19T18:50:47,652Z bridging.AMQPBridgeManager. - Create new AMQP bridge
-  2026-11-19T18:50:47,653Z netty.AMQPClient. - Connect to: localhost:10008
-  2026-11-19T18:50:47,656Z netty.AMQPClient. - Connected to localhost:10008, Local address: /127.0.0.1:58602
-  2026-11-19T18:50:47,658Z netty.AMQPChannelHandler. - New client connection c34b9e3f from localhost/127.0.0.1:10008 to /127.0.0.1:58602
-  2026-11-19T18:50:47,697Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseB, L=Mumbai, C=IN, requested server name: 6c2a65cdb18404af540f58819b3a7dd2.corda.net.
-  2026-11-19T18:50:47,697Z bridging.AMQPBridgeManager. - Bridge Connected
-  2026-11-19T18:50:47,699Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:49:51,433Z messaging.ArtemisMessagingServer. - P2P messaging server listening on 0.0.0.0:10002
+  2026-11-19T19:51:47,438Z bridging.AMQPBridgeManager. - Create new AMQP bridge
+  2026-11-19T19:51:47,444Z netty.AMQPClient. - Connect to: localhost:10005
+  2026-11-19T19:51:47,546Z netty.AMQPClient. - Connected to localhost:10005, Local address: /127.0.0.1:51499
+  2026-11-19T19:51:47,563Z netty.AMQPChannelHandler. - New client connection b810fd45 from localhost/127.0.0.1:10005 to /127.0.0.1:51499
+  2026-11-19T19:51:47,623Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseA, L=Bengaluru, C=IN, requested server name: 4000f94e5e5957154e34e4df53536828.corda.net.
+  2026-11-19T19:51:47,705Z bridging.AMQPBridgeManager. - Bridge Connected
+  2026-11-19T19:51:47,737Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
+  2026-11-19T19:51:53,843Z bridging.AMQPBridgeManager. - Create new AMQP bridge
+  2026-11-19T19:51:53,843Z netty.AMQPClient. - Connect to: localhost:10008
+  2026-11-19T19:51:53,849Z netty.AMQPClient. - Connected to localhost:10008, Local address: /127.0.0.1:51504
+  2026-11-19T19:51:53,851Z netty.AMQPChannelHandler. - New client connection 65715979 from localhost/127.0.0.1:10008 to /127.0.0.1:51504
+  2026-11-19T19:51:53,897Z netty.AMQPChannelHandler. - Handshake completed with subject: O=EnterpriseB, L=Mumbai, C=IN, requested server name: 6c2a65cdb18404af540f58819b3a7dd2.corda.net.
+  2026-11-19T19:51:53,899Z bridging.AMQPBridgeManager. - Bridge Connected
+  2026-11-19T19:51:53,900Z bridging.AMQPBridgeManager. - Bridge Connected so starting Artemis
 
 ==============================================================================================================
   SUMMARY: outbound AMQP bridges opened (from -> to) and mutually-authenticated TLS peers

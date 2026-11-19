@@ -547,7 +547,7 @@ for r in SEND:
 table(rows, widths=[0.7, 2.4, 2.4, 4.6, 4.4, 1.8], size=9, caption="Messages sent in the live run (evidence/demo_run.txt)")
 P(f"All four messages were then acknowledged by their receivers. On EnterpriseB, ReadMessageFlow decrypted the purchase "
   f"order, recomputed the SHA-256 (**{DIGEST[:16]}...**) and found it identical to the contentHash on the ledger "
-  f"(integrity check PASSED, {DECRYPT_US} us for envelope unwrap and decryption). When EnterpriseC tried to send a "
+  f"(integrity check PASSED, {DECRYPT_US} µs for envelope unwrap and decryption). When EnterpriseC tried to send a "
   f"message to EnterpriseA, the flow failed with: **\"{UNTRUSTED_MSG}\"**.")
 
 # ================================================================== 10 SCREENSHOTS
