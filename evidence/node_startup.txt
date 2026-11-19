@@ -1,0 +1,8 @@
+  launched Notary       (java -jar corda.jar, logs -> build/nodes/Notary/logs/node-stdout.log)
+  launched EnterpriseA  (java -jar corda.jar, logs -> build/nodes/EnterpriseA/logs/node-stdout.log)
+  launched EnterpriseB  (java -jar corda.jar, logs -> build/nodes/EnterpriseB/logs/node-stdout.log)
+  launched EnterpriseC  (java -jar corda.jar, logs -> build/nodes/EnterpriseC/logs/node-stdout.log)
+  [ 89.5s] Notary       Node for "Notary" started up and registered in 73.76 sec
+  [ 94.6s] EnterpriseA  Node for "EnterpriseA" started up and registered in 65.24 sec
+  [ 94.7s] EnterpriseC  Node for "EnterpriseC" started up and registered in 63.7 sec
+  [ 95.7s] EnterpriseB  Node for "EnterpriseB" started up and registered in 64.33 sec

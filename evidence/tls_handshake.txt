@@ -1,0 +1,98 @@
+====================================================================================================
+  TLS HANDSHAKE EVIDENCE - EnterpriseA P2P port localhost:10005  |  Gagan N (24BTRBT013)
+  Tool: OpenSSL 3.2.4 11 Feb 2025 (Library: OpenSSL 3.2.4 11 Feb 2025)
+====================================================================================================
+
+TEST 1: TLS 1.2 handshake WITHOUT a client certificate
+  $ openssl s_client -connect localhost:10005 -showcerts -tls1_2
+  exit code: 1
+  | CONNECTED(000001C4)
+  |  0 s:C=IN, L=Bengaluru, O=EnterpriseA
+  |    i:C=IN, L=Bengaluru, O=EnterpriseA
+  |  1 s:C=IN, L=Bengaluru, O=EnterpriseA
+  |    i:C=US, L=New York, OU=Corda, O=R3 HoldCo LLC, CN=Corda Doorman CA
+  |  2 s:C=US, L=New York, OU=Corda, O=R3 HoldCo LLC, CN=Corda Doorman CA
+  |    i:CN=Corda Node Root CA, O=R3, OU=corda, L=London, C=UK
+  |  3 s:CN=Corda Node Root CA, O=R3, OU=corda, L=London, C=UK
+  |    i:CN=Corda Node Root CA, O=R3, OU=corda, L=London, C=UK
+  | subject=C=IN, L=Bengaluru, O=EnterpriseA
+  | issuer=C=IN, L=Bengaluru, O=EnterpriseA
+  | Acceptable client certificate CA names
+  | CN=Corda Node Root CA, O=R3, OU=corda, L=London, C=UK
+  | Client Certificate Types: ECDSA sign, RSA sign, DSA sign
+  | Requested Signature Algorithms: ECDSA+SHA256:ECDSA+SHA384:ECDSA+SHA512:ed25519:ed448:RSA-PSS+SHA256:RSA-PSS+SHA384:RSA-PSS+SHA512:rsa_pss_pss_sha256:rsa_pss_pss_sha384:rsa_pss_pss_sha512:RSA+SHA256:RSA+SHA384:RSA+SHA512:DSA+SHA256
+  | Shared Requested Signature Algorithms: ECDSA+SHA256:ECDSA+SHA384:ECDSA+SHA512:ed25519:ed448:RSA-PSS+SHA256:RSA-PSS+SHA384:RSA-PSS+SHA512:rsa_pss_pss_sha256:rsa_pss_pss_sha384:rsa_pss_pss_sha512:RSA+SHA256:RSA+SHA384:RSA+SHA512:DSA+SHA256
+  | Peer signing digest: SHA256
+  | Peer signature type: ECDSA
+  | Server Temp Key: X25519, 253 bits
+  | SSL handshake has read 2692 bytes and written 299 bytes
+  | Verification error: unsuitable certificate purpose
+  | New, TLSv1.2, Cipher is ECDHE-ECDSA-AES128-GCM-SHA256
+  | Secure Renegotiation IS supported
+  |     Protocol  : TLSv1.2
+  |     Cipher    : ECDHE-ECDSA-AES128-GCM-SHA256
+  |     Verify return code: 26 (unsuitable certificate purpose)
+  | verify error:num=19:self-signed certificate in certificate chain
+  | verify error:num=26:unsuitable certificate purpose
+  | 809A0000:error:0A000410:SSL routines:ssl3_read_bytes:ssl/tls alert handshake failure:../openssl-3.2.4/ssl/record/rec_layer_s3.c:909:SSL alert number 40
+
+TEST 2: TLS 1.2 handshake WITH EnterpriseB's node TLS certificate (signed by the network's Doorman CA)
+  $ openssl s_client -connect localhost:10005 -showcerts -tls1_2 -cert <B tls cert> -key <B tls key> -cert_chain <B node CA, doorman, root>
+  exit code: 0
+  | CONNECTED(000001D8)
+  |  0 s:C=IN, L=Bengaluru, O=EnterpriseA
+  |    i:C=IN, L=Bengaluru, O=EnterpriseA
+  |  1 s:C=IN, L=Bengaluru, O=EnterpriseA
+  |    i:C=US, L=New York, OU=Corda, O=R3 HoldCo LLC, CN=Corda Doorman CA
+  |  2 s:C=US, L=New York, OU=Corda, O=R3 HoldCo LLC, CN=Corda Doorman CA
+  |    i:CN=Corda Node Root CA, O=R3, OU=corda, L=London, C=UK
+  |  3 s:CN=Corda Node Root CA, O=R3, OU=corda, L=London, C=UK
+  |    i:CN=Corda Node Root CA, O=R3, OU=corda, L=London, C=UK
+  | subject=C=IN, L=Bengaluru, O=EnterpriseA
+  | issuer=C=IN, L=Bengaluru, O=EnterpriseA
+  | Acceptable client certificate CA names
+  | CN=Corda Node Root CA, O=R3, OU=corda, L=London, C=UK
+  | Client Certificate Types: ECDSA sign, RSA sign, DSA sign
+  | Requested Signature Algorithms: ECDSA+SHA256:ECDSA+SHA384:ECDSA+SHA512:ed25519:ed448:RSA-PSS+SHA256:RSA-PSS+SHA384:RSA-PSS+SHA512:rsa_pss_pss_sha256:rsa_pss_pss_sha384:rsa_pss_pss_sha512:RSA+SHA256:RSA+SHA384:RSA+SHA512:DSA+SHA256
+  | Shared Requested Signature Algorithms: ECDSA+SHA256:ECDSA+SHA384:ECDSA+SHA512:ed25519:ed448:RSA-PSS+SHA256:RSA-PSS+SHA384:RSA-PSS+SHA512:rsa_pss_pss_sha256:rsa_pss_pss_sha384:rsa_pss_pss_sha512:RSA+SHA256:RSA+SHA384:RSA+SHA512:DSA+SHA256
+  | Peer signing digest: SHA256
+  | Peer signature type: ECDSA
+  | Server Temp Key: X25519, 253 bits
+  | SSL handshake has read 7646 bytes and written 2700 bytes
+  | Verification error: unsuitable certificate purpose
+  | New, TLSv1.2, Cipher is ECDHE-ECDSA-AES128-GCM-SHA256
+  | Secure Renegotiation IS supported
+  |     Protocol  : TLSv1.2
+  |     Cipher    : ECDHE-ECDSA-AES128-GCM-SHA256
+  |     Verify return code: 26 (unsuitable certificate purpose)
+  | verify error:num=19:self-signed certificate in certificate chain
+  | verify error:num=26:unsuitable certificate purpose
+
+TEST 3: TLS 1.3 attempt (protocol version policy)
+  $ openssl s_client -connect localhost:10005 -showcerts -tls1_3
+  exit code: 1
+  | CONNECTED(000001DC)
+  | no peer certificate available
+  | SSL handshake has read 7 bytes and written 236 bytes
+  | New, (NONE), Cipher is (NONE)
+  | Verify return code: 0 (ok)
+  | B8320000:error:0A00042E:SSL routines:ssl3_read_bytes:tlsv1 alert protocol version:../openssl-3.2.4/ssl/record/rec_layer_s3.c:909:SSL alert number 70
+
+SERVER SIDE: EnterpriseA node log lines produced by the tests above
+  | [WARN] 00:20:09+0530 [P2PServer-netty-9] core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55471: javax.net.ssl.SSLHandshakeException: (handshake_failure) Empty client certificate chain.
+  | [WARN] 00:20:11+0530 [P2PServer-netty-11] core.server. - AMQ222208: SSL handshake failed for client from /[0:0:0:0:0:0:0:1]:55475: javax.net.ssl.SSLHandshakeException: (protocol_version) The client supported protocol versions [TLSv1.3] are not accepted by serv
+
+====================================================================================================
+  SUMMARY
+====================================================================================================
+  Server certificate subject     : C=IN, L=Bengaluru, O=EnterpriseA
+  Negotiated protocol (with cert): TLSv1.2
+  Negotiated cipher   (with cert): ECDHE-ECDSA-AES128-GCM-SHA256
+  Server requested client cert   : YES (CertificateRequest with acceptable CA names)
+  Without client certificate     : HANDSHAKE REJECTED (alert 40 handshake_failure) -> mutual TLS enforced
+  With a network TLS certificate : HANDSHAKE COMPLETED
+  TLS 1.3 attempt                : refused (TLS 1.2 only)
+
+  Corda's P2P transport is AMQP 1.0 over TLS between Artemis brokers/bridges. Both sides must present a
+  certificate chaining to the network root CA (truststore.jks), so an outsider without a Doorman-issued
+  certificate cannot even open a connection - before any flow or trust policy is reached.

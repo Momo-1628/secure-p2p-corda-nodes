@@ -1,0 +1,99 @@
+====================================================================================
+  Secure P2P Communication between Enterprise Corda Nodes  |  Gagan N (24BTRBT013)
+====================================================================================
+Connected over RPC to: EnterpriseA, EnterpriseB, EnterpriseC
+
+>> 1. NETWORK MAP (as seen by EnterpriseA)
+------------------------------------------
++-------------+----------------------------------+-----------------+----------+-------------------------+
+| Node        | X.500 name                       | P2P address     | Platform | Role                    |
++-------------+----------------------------------+-----------------+----------+-------------------------+
+| EnterpriseA | O=EnterpriseA, L=Bengaluru, C=IN | localhost:10005 | 140      | Enterprise node         |
+| EnterpriseB | O=EnterpriseB, L=Mumbai, C=IN    | localhost:10008 | 140      | Enterprise node         |
+| EnterpriseC | O=EnterpriseC, L=Delhi, C=IN     | localhost:10011 | 140      | Enterprise node         |
+| Notary      | O=Notary, L=Bengaluru, C=IN      | localhost:10002 | 140      | Notary (non-validating) |
++-------------+----------------------------------+-----------------+----------+-------------------------+
+
+>> 2. SENDING ENCRYPTED MESSAGES (X25519 key exchange + AES-256-GCM + 2 signatures + notary)
+--------------------------------------------------------------------------------------------
++---+-------------+-------------+-------------------------------+-----------------+-----------------------------------------+---------+
+| # | From        | To          | Subject                       | Tx id           | Ciphertext (base64, stored on ledger)   | Flow ms |
++---+-------------+-------------+-------------------------------+-----------------+-----------------------------------------+---------+
+| 1 | EnterpriseA | EnterpriseB | PO-2026-0412 Purchase details | 3C162F73C2EA... | PO+MEP55KgqqFTzKbE+5PS9uKWy8Db1OzsKE... | 13407   |
+| 2 | EnterpriseA | EnterpriseB | MSA-2026 Contract terms       | 80B3F8F4339D... | pKnID5k2izBsDGBNERXqxxPPt1aLttsUO/g4... | 1238    |
+| 3 | EnterpriseA | EnterpriseB | Q1-2027 Pricing revision      | 59AAA9663BC5... | vlg+LlJJeV+Ts0r9gzkZVdSWeeEljn+9k5iu... | 1018    |
+| 4 | EnterpriseB | EnterpriseA | INV-B-7781 Invoice            | 1ABE777C7881... | WUcA6K6+Ve/rRk5+ZhCQraP8KTzu2aVT1RdZ... | 1676    |
++---+-------------+-------------+-------------------------------+-----------------+-----------------------------------------+---------+
+Each transaction is signed by sender + receiver and notarised (time window). FinalityFlow sent it to the receiver only.
+
+>> 3. ACKNOWLEDGE (receiver decrypts, verifies SHA-256, then signs SENT -> ACKNOWLEDGED)
+----------------------------------------------------------------------------------------
++-------------+-------------------------------+-------------+-----------------+--------------+
+| Receiver    | Subject                       | From        | Ack tx id       | New status   |
++-------------+-------------------------------+-------------+-----------------+--------------+
+| EnterpriseB | PO-2026-0412 Purchase details | EnterpriseA | 5571B1471F39... | ACKNOWLEDGED |
+| EnterpriseB | MSA-2026 Contract terms       | EnterpriseA | 1135192B2882... | ACKNOWLEDGED |
+| EnterpriseB | Q1-2027 Pricing revision      | EnterpriseA | 176C573C5DCB... | ACKNOWLEDGED |
+| EnterpriseA | INV-B-7781 Invoice            | EnterpriseB | 48CF3501DB44... | ACKNOWLEDGED |
++-------------+-------------------------------+-------------+-----------------+--------------+
+
+>> 4. READ + DECRYPT ON EnterpriseB (ReadMessageFlow, local only)
+-----------------------------------------------------------------
+  Message id                 : 3973ab19-2b5f-468e-88ed-ed7ca88172e8
+  From -> To                 : EnterpriseA -> EnterpriseB
+  Subject                    : PO-2026-0412 Purchase details
+  Status                     : ACKNOWLEDGED
+  Ciphertext (vault)         : PO+MEP55KgqqFTzKbE+5PS9uKWy8Db1OzsKEHEOtKb1qNnE3KomgLT9ZxSHQ...
+  Decrypted body             : Purchase order PO-2026-0412: 500 units of industrial IoT sensors (model TS-40) at INR 1,250 per unit. Total INR 6,25,000. Delivery to the Mumbai warehouse by 15-Dec-2026.
+  contentHash (ledger)       : 117ed90302c2c9462e693eda7bb56fe37a2119dca058153c9cf1e05adc7d544f
+  SHA-256(decrypted)         : 117ed90302c2c9462e693eda7bb56fe37a2119dca058153c9cf1e05adc7d544f
+  Integrity check            : PASSED (hashes match, GCM tag valid)
+  Decrypt time               : 1953 us (envelope unwrap + AES-GCM)
+
+>> 5. PRIVACY - VAULT CONTENTS PER NODE (need-to-know)
+------------------------------------------------------
++-------------+---------------------------+------------+------+--------------+--------------------------+
+| Node        | SecureMessageStates (all) | Unconsumed | SENT | ACKNOWLEDGED | Sees plaintext?          |
++-------------+---------------------------+------------+------+--------------+--------------------------+
+| EnterpriseA | 8                         | 4          | 0    | 4            | Only via ReadMessageFlow |
+| EnterpriseB | 8                         | 4          | 0    | 4            | Only via ReadMessageFlow |
+| EnterpriseC | 0                         | 0          | 0    | 0            | No (nothing stored)      |
++-------------+---------------------------+------------+------+--------------+--------------------------+
+EnterpriseC = 0: it was never a participant, so FinalityFlow never sent it any transaction.
+The vault only stores ciphertext; the notary (non-validating) only saw a filtered transaction.
+
+>> 6. TRUST POLICY - EnterpriseC tries to send to EnterpriseA (C is not in A's trustedPeers)
+--------------------------------------------------------------------------------------------
+  Result                     : REJECTED by EnterpriseA's responder flow
+  Exception                  : FlowException
+  Message                    : Untrusted peer: O=EnterpriseC, L=Delhi, C=IN is not in the trustedPeers list of O=EnterpriseA, L=Bengaluru, C=IN
+  A's vault after attempt    : 0 messages from EnterpriseC
+
+>> 7. P2P LATENCY - PingPeerFlow EnterpriseA -> EnterpriseB (20 round trips over TLS/AMQP)
+------------------------------------------------------------------------------------------
+#01  144.14 ms   #02  100.34 ms   #03  102.52 ms   #04  102.35 ms   #05  107.49 ms   
+#06  107.18 ms   #07  114.77 ms   #08  119.92 ms   #09  186.93 ms   #10  131.56 ms   
+#11  111.22 ms   #12  118.33 ms   #13  122.36 ms   #14  120.63 ms   #15  112.00 ms   
+#16  108.57 ms   #17  130.39 ms   #18  136.60 ms   #19  121.23 ms   #20  112.91 ms   
++---------+------------+--------+--------+-----------+------------+
+| Samples | Average ms | Min ms | Max ms | Median ms | Std dev ms |
++---------+------------+--------+--------+-----------+------------+
+| 20      | 120.57     | 100.34 | 186.93 | 116.55    | 19.05      |
++---------+------------+--------+--------+-----------+------------+
+(The first ping includes session set-up; later pings reuse the established AMQP/TLS bridge.)
+
+>> 8. ENCRYPTION OVERHEAD (local micro-benchmark, 3000 iterations per size after JIT warm-up)
+---------------------------------------------------------------------------------------------
+  X25519 keygen x2 + ECDH + HKDF : 980.03 us per message
++-----------+--------------------------+---------------+------------+------------+------------+
+| Body size | Ciphertext (base64) size | Size overhead | Encrypt us | Decrypt us | SHA-256 us |
++-----------+--------------------------+---------------+------------+------------+------------+
+| 256 B     | 380 B                    | +48.4%        | 9.15       | 7.73       | 23.17      |
+| 1024 B    | 1404 B                   | +37.1%        | 11.15      | 11.21      | 42.67      |
+| 4096 B    | 5500 B                   | +34.3%        | 25.01      | 26.16      | 28.04      |
+| 16384 B   | 21884 B                  | +33.6%        | 59.81      | 47.11      | 34.60      |
+| 65536 B   | 87420 B                  | +33.4%        | 177.89     | 156.86     | 73.29      |
++-----------+--------------------------+---------------+------------+------------+------------+
+Overhead per message = 12-byte IV + 16-byte GCM tag, then base64 (x4/3) for the String field.
+
+Done.

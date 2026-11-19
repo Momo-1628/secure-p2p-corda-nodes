@@ -1,0 +1,3017 @@
+====================================================================================================
+  CERTIFICATE EVIDENCE - Secure P2P Corda network  |  Gagan N (24BTRBT013)
+  Source: build/nodes/<Node>/certificates/*.jks  (keytool -list -v)
+====================================================================================================
+
+HIERARCHY (Corda dev-mode PKI, same structure as a production Corda Network):
+
+  Corda Root CA  (self-signed, in truststore.jks of every node)
+    +-- Corda Doorman / Intermediate CA  (issues node CA certificates)
+    |     +-- Node CA  'O=EnterpriseX,...'  (cordaclientca in nodekeystore.jks)
+    |           +-- Legal identity  (identity-private-key, Ed25519)  -> signs transactions
+    |           +-- TLS certificate (cordaclienttls in sslkeystore.jks, ECDSA P-256) -> mutual TLS for P2P/AMQP
+    +-- Network Map CA  (signs the network map / network parameters; not stored in the node keystores)
+
+----------------------------------------------------------------------------------------------------
+NODE: EnterpriseA
+----------------------------------------------------------------------------------------------------
+  sslkeystore.jks  [TLS key store (P2P transport)]  - 1 entries
+    alias 'cordaclienttls': chain length 4
+      [0] subject: O=EnterpriseA, L=Bengaluru, C=IN
+          issuer : O=EnterpriseA, L=Bengaluru, C=IN
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: O=EnterpriseA, L=Bengaluru, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [3] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+  nodekeystore.jks  [Node CA + legal identity key store]  - 2 entries
+    alias 'cordaclientca': chain length 3
+      [0] subject: O=EnterpriseA, L=Bengaluru, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+    alias 'identity-private-key': chain length 4
+      [0] subject: O=EnterpriseA, L=Bengaluru, C=IN
+          issuer : O=EnterpriseA, L=Bengaluru, C=IN
+          key    : 255-bit Ed25519 key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: O=EnterpriseA, L=Bengaluru, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [3] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+  truststore.jks  [Trust store (network root CA)]  - 1 entries
+    alias 'cordarootca': chain length 1
+      [0] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+----------------------------------------------------------------------------------------------------
+NODE: EnterpriseB
+----------------------------------------------------------------------------------------------------
+  sslkeystore.jks  [TLS key store (P2P transport)]  - 1 entries
+    alias 'cordaclienttls': chain length 4
+      [0] subject: O=EnterpriseB, L=Mumbai, C=IN
+          issuer : O=EnterpriseB, L=Mumbai, C=IN
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: O=EnterpriseB, L=Mumbai, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [3] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+  nodekeystore.jks  [Node CA + legal identity key store]  - 2 entries
+    alias 'cordaclientca': chain length 3
+      [0] subject: O=EnterpriseB, L=Mumbai, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+    alias 'identity-private-key': chain length 4
+      [0] subject: O=EnterpriseB, L=Mumbai, C=IN
+          issuer : O=EnterpriseB, L=Mumbai, C=IN
+          key    : 255-bit Ed25519 key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: O=EnterpriseB, L=Mumbai, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [3] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+  truststore.jks  [Trust store (network root CA)]  - 1 entries
+    alias 'cordarootca': chain length 1
+      [0] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+----------------------------------------------------------------------------------------------------
+NODE: EnterpriseC
+----------------------------------------------------------------------------------------------------
+  sslkeystore.jks  [TLS key store (P2P transport)]  - 1 entries
+    alias 'cordaclienttls': chain length 4
+      [0] subject: O=EnterpriseC, L=Delhi, C=IN
+          issuer : O=EnterpriseC, L=Delhi, C=IN
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: O=EnterpriseC, L=Delhi, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [3] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+  nodekeystore.jks  [Node CA + legal identity key store]  - 2 entries
+    alias 'cordaclientca': chain length 3
+      [0] subject: O=EnterpriseC, L=Delhi, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+    alias 'identity-private-key': chain length 4
+      [0] subject: O=EnterpriseC, L=Delhi, C=IN
+          issuer : O=EnterpriseC, L=Delhi, C=IN
+          key    : 255-bit Ed25519 key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: O=EnterpriseC, L=Delhi, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [3] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+  truststore.jks  [Trust store (network root CA)]  - 1 entries
+    alias 'cordarootca': chain length 1
+      [0] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+----------------------------------------------------------------------------------------------------
+NODE: Notary
+----------------------------------------------------------------------------------------------------
+  sslkeystore.jks  [TLS key store (P2P transport)]  - 1 entries
+    alias 'cordaclienttls': chain length 4
+      [0] subject: O=Notary, L=Bengaluru, C=IN
+          issuer : O=Notary, L=Bengaluru, C=IN
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: O=Notary, L=Bengaluru, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [3] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+  nodekeystore.jks  [Node CA + legal identity key store]  - 2 entries
+    alias 'cordaclientca': chain length 3
+      [0] subject: O=Notary, L=Bengaluru, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+    alias 'identity-private-key': chain length 4
+      [0] subject: O=Notary, L=Bengaluru, C=IN
+          issuer : O=Notary, L=Bengaluru, C=IN
+          key    : 255-bit Ed25519 key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [1] subject: O=Notary, L=Bengaluru, C=IN
+          issuer : CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [2] subject: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+      [3] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+  truststore.jks  [Trust store (network root CA)]  - 1 entries
+    alias 'cordarootca': chain length 1
+      [0] subject: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          issuer : C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+          key    : 256-bit EC (secp256r1) key sig: SHA256withECDSA  valid until: Thu May 20 05:30:00 IST 2027
+
+
+====================================================================================================
+  FULL keytool -list -v OUTPUT
+====================================================================================================
+
+######## EnterpriseA / sslkeystore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+Alias name: cordaclienttls
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 4
+Certificate[1]:
+Owner: O=EnterpriseA, L=Bengaluru, C=IN
+Issuer: O=EnterpriseA, L=Bengaluru, C=IN
+Serial number: 623394f8e91d6a14d7545fe4803b7067
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 57:DF:93:9B:A5:F1:18:04:29:F5:DF:5B:BE:ED:21:26:C3:6F:68:A8
+	 SHA256: A4:80:3C:C5:38:75:32:40:A4:2F:C4:23:62:87:F4:AD:36:5D:1B:E9:44:54:43:1A:2E:14:89:3C:AB:69:A0:02
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 05                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 5E 35 D2 21 7C 95 69 81   2F 19 8B 19 72 A9 E1 A1  ^5.!..i./...r...
+0010: B8 E8 C1 A1                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:false
+  PathLen: undefined
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_Encipherment
+  Key_Agreement
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: CB ED 30 E6 38 2F 05 7E   34 A7 B7 2A A1 A5 93 B6  ..0.8/..4..*....
+0010: 02 65 5B 1E                                        .e[.
+]
+]
+
+Certificate[2]:
+Owner: O=EnterpriseA, L=Bengaluru, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 5e9f249a11cd469c3d950e78bed0d900
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: A6:71:F3:94:5F:27:9A:06:21:42:07:59:AD:35:1F:B0:6E:A3:78:B3
+	 SHA256: A0:BC:23:80:32:41:AD:C8:CF:13:40:EB:ED:40:21:1E:A1:6E:BC:8A:E1:55:01:E3:78:09:FE:5F:4C:BF:90:28
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=EnterpriseA, L=Bengaluru, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 5E 35 D2 21 7C 95 69 81   2F 19 8B 19 72 A9 E1 A1  ^5.!..i./...r...
+0010: B8 E8 C1 A1                                        ....
+]
+]
+
+Certificate[3]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[4]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+Warning:
+The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseA\certificates\sslkeystore.jks -destkeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseA\certificates\sslkeystore.jks -deststoretype pkcs12".
+
+
+######## EnterpriseA / nodekeystore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 2 entries
+
+Alias name: cordaclientca
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 3
+Certificate[1]:
+Owner: O=EnterpriseA, L=Bengaluru, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 7b1b9983ffb343d1904cadcfd1872802
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 1A:FE:59:7B:C7:F0:D0:69:00:3F:6C:C2:60:69:6A:7C:15:4D:07:31
+	 SHA256: DE:CF:B6:B9:E8:35:DC:36:C9:79:88:E2:77:CD:2C:60:A9:AB:98:2B:31:3C:2A:4B:73:57:45:75:33:AE:D2:A3
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=EnterpriseA, L=Bengaluru, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 53 9E 26 9D 27 AD 34 A3   FE 2C 5C 50 49 39 D4 DB  S.&.'.4..,\PI9..
+0010: 3C C3 18 91                                        <...
+]
+]
+
+Certificate[2]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[3]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+Alias name: identity-private-key
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 4
+Certificate[1]:
+Owner: O=EnterpriseA, L=Bengaluru, C=IN
+Issuer: O=EnterpriseA, L=Bengaluru, C=IN
+Serial number: 6dee2cc145acf10a2fb3c555a7e5ca3d
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 18:38:08:ED:54:0E:22:7B:0F:3B:58:BD:2D:4D:65:78:B5:F8:E4:E8
+	 SHA256: 0A:99:A8:C2:AB:5E:40:20:64:DC:74:10:60:E6:C4:D8:B4:BA:85:6F:3A:0B:D5:F0:89:2C:45:07:7B:B6:CF:54
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 255-bit Ed25519 key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 06                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 53 9E 26 9D 27 AD 34 A3   FE 2C 5C 50 49 39 D4 DB  S.&.'.4..,\PI9..
+0010: 3C C3 18 91                                        <...
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 45 B5 BD 89 87 7A 53 6E   47 69 20 6B 78 53 D6 77  E....zSnGi kxS.w
+0010: 21 55 47 6C                                        !UGl
+]
+]
+
+Certificate[2]:
+Owner: O=EnterpriseA, L=Bengaluru, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 7b1b9983ffb343d1904cadcfd1872802
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 1A:FE:59:7B:C7:F0:D0:69:00:3F:6C:C2:60:69:6A:7C:15:4D:07:31
+	 SHA256: DE:CF:B6:B9:E8:35:DC:36:C9:79:88:E2:77:CD:2C:60:A9:AB:98:2B:31:3C:2A:4B:73:57:45:75:33:AE:D2:A3
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=EnterpriseA, L=Bengaluru, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 53 9E 26 9D 27 AD 34 A3   FE 2C 5C 50 49 39 D4 DB  S.&.'.4..,\PI9..
+0010: 3C C3 18 91                                        <...
+]
+]
+
+Certificate[3]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[4]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+Warning:
+The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseA\certificates\nodekeystore.jks -destkeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseA\certificates\nodekeystore.jks -deststoretype pkcs12".
+
+
+######## EnterpriseA / truststore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+Alias name: cordarootca
+Creation date: Nov 20, 2026
+Entry type: trustedCertEntry
+
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+
+######## EnterpriseB / sslkeystore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+Alias name: cordaclienttls
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 4
+Certificate[1]:
+Owner: O=EnterpriseB, L=Mumbai, C=IN
+Issuer: O=EnterpriseB, L=Mumbai, C=IN
+Serial number: 66f56504300a1a6e5f38286478574b7a
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: F6:2D:AE:FF:DA:02:42:04:B0:81:D2:2D:A2:8F:B1:C3:3A:AE:69:76
+	 SHA256: C2:A8:EB:F4:50:7D:25:38:BF:53:DC:FF:0B:B3:25:2A:B3:ED:81:84:CD:53:DB:73:5D:ED:09:FB:49:D8:A1:BF
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 05                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: A9 00 F0 A6 B8 E9 78 F0   55 AC 2F C0 8A DE D9 71  ......x.U./....q
+0010: DF 1B 32 62                                        ..2b
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:false
+  PathLen: undefined
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_Encipherment
+  Key_Agreement
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: DE 78 04 83 8D 22 48 43   6B 5A 36 06 9B CC 53 90  .x..."HCkZ6...S.
+0010: 85 06 E9 D2                                        ....
+]
+]
+
+Certificate[2]:
+Owner: O=EnterpriseB, L=Mumbai, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 47e7649f6c3477750c3c38aa0a5c29ef
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 32:1F:B4:A8:D1:A7:03:0B:38:ED:AD:00:5A:0E:0F:FC:50:16:5E:70
+	 SHA256: 76:32:98:AB:33:E4:A8:42:12:B1:75:4A:C0:3E:DA:27:15:E0:40:1D:3E:DA:EE:61:F9:51:A6:7A:2E:BB:D7:C6
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=EnterpriseB, L=Mumbai, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: A9 00 F0 A6 B8 E9 78 F0   55 AC 2F C0 8A DE D9 71  ......x.U./....q
+0010: DF 1B 32 62                                        ..2b
+]
+]
+
+Certificate[3]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[4]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+Warning:
+The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseB\certificates\sslkeystore.jks -destkeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseB\certificates\sslkeystore.jks -deststoretype pkcs12".
+
+
+######## EnterpriseB / nodekeystore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 2 entries
+
+Alias name: cordaclientca
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 3
+Certificate[1]:
+Owner: O=EnterpriseB, L=Mumbai, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 6201ce14a1ab688bc7f8428db8a11cca
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: E9:46:7D:0B:1B:3E:69:3D:B6:4C:67:3E:CE:4D:CD:72:4A:84:58:A8
+	 SHA256: EE:E0:99:7F:2B:7D:DC:BC:4D:56:08:55:1E:BD:09:22:63:38:8A:12:DE:8F:F0:93:28:65:83:5F:92:EF:21:1C
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=EnterpriseB, L=Mumbai, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 5B 67 F3 A8 2B 4E 8D 7A   84 2B 9F 2D 35 2C 80 95  [g..+N.z.+.-5,..
+0010: 40 8F 0D EA                                        @...
+]
+]
+
+Certificate[2]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[3]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+Alias name: identity-private-key
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 4
+Certificate[1]:
+Owner: O=EnterpriseB, L=Mumbai, C=IN
+Issuer: O=EnterpriseB, L=Mumbai, C=IN
+Serial number: 7f5b328caf0fd190d474cdccf077d5bb
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 4E:3F:10:5C:FF:2D:3D:CB:A0:0A:72:B0:1C:8F:62:28:05:23:F5:D4
+	 SHA256: 71:F7:D4:2B:DB:41:7C:46:85:CA:55:4F:DB:7C:ED:9A:45:D1:43:BF:2E:AF:CE:81:33:E8:80:4A:15:49:D9:E1
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 255-bit Ed25519 key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 06                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 5B 67 F3 A8 2B 4E 8D 7A   84 2B 9F 2D 35 2C 80 95  [g..+N.z.+.-5,..
+0010: 40 8F 0D EA                                        @...
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: F7 C4 B4 F7 B5 3E 22 97   C1 AE 68 CD E2 89 28 22  .....>"...h...("
+0010: E7 0D 80 2E                                        ....
+]
+]
+
+Certificate[2]:
+Owner: O=EnterpriseB, L=Mumbai, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 6201ce14a1ab688bc7f8428db8a11cca
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: E9:46:7D:0B:1B:3E:69:3D:B6:4C:67:3E:CE:4D:CD:72:4A:84:58:A8
+	 SHA256: EE:E0:99:7F:2B:7D:DC:BC:4D:56:08:55:1E:BD:09:22:63:38:8A:12:DE:8F:F0:93:28:65:83:5F:92:EF:21:1C
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=EnterpriseB, L=Mumbai, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 5B 67 F3 A8 2B 4E 8D 7A   84 2B 9F 2D 35 2C 80 95  [g..+N.z.+.-5,..
+0010: 40 8F 0D EA                                        @...
+]
+]
+
+Certificate[3]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[4]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+Warning:
+The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseB\certificates\nodekeystore.jks -destkeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseB\certificates\nodekeystore.jks -deststoretype pkcs12".
+
+
+######## EnterpriseB / truststore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+Alias name: cordarootca
+Creation date: Nov 20, 2026
+Entry type: trustedCertEntry
+
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+
+######## EnterpriseC / sslkeystore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+Alias name: cordaclienttls
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 4
+Certificate[1]:
+Owner: O=EnterpriseC, L=Delhi, C=IN
+Issuer: O=EnterpriseC, L=Delhi, C=IN
+Serial number: 5673c05dcc00bd99e5174fbb2630dd52
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 57:59:8F:68:E8:9C:0F:62:34:09:04:DC:8F:FE:22:A7:9C:83:21:2E
+	 SHA256: F2:FE:42:CD:2C:8D:CE:23:21:A6:20:CC:30:FB:2D:50:0A:3B:D6:C9:4C:7E:FB:2C:74:3F:31:9A:43:67:28:9C
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 05                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 35 EE 6E D4 D4 48 B4 BC   EF 95 98 F7 88 99 31 56  5.n..H........1V
+0010: 25 4B 0D 80                                        %K..
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:false
+  PathLen: undefined
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_Encipherment
+  Key_Agreement
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 9B FF B1 B6 C2 2B 09 AF   C6 BD 5B A3 FC 67 C0 47  .....+....[..g.G
+0010: 44 79 9B 52                                        Dy.R
+]
+]
+
+Certificate[2]:
+Owner: O=EnterpriseC, L=Delhi, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 43908711a7c61e4ec176e2af3ef6f1ba
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: C0:EE:92:F3:E9:E0:25:F2:40:1A:FD:E5:B9:39:40:91:E3:D2:98:90
+	 SHA256: 63:8E:1B:60:B0:61:58:DE:C9:9C:7D:0C:12:84:03:DD:E6:26:E1:F2:41:4F:F0:38:02:FD:12:F3:A9:3D:1F:55
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=EnterpriseC, L=Delhi, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 35 EE 6E D4 D4 48 B4 BC   EF 95 98 F7 88 99 31 56  5.n..H........1V
+0010: 25 4B 0D 80                                        %K..
+]
+]
+
+Certificate[3]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[4]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+Warning:
+The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseC\certificates\sslkeystore.jks -destkeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseC\certificates\sslkeystore.jks -deststoretype pkcs12".
+
+
+######## EnterpriseC / nodekeystore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 2 entries
+
+Alias name: cordaclientca
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 3
+Certificate[1]:
+Owner: O=EnterpriseC, L=Delhi, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 5879604268d2aa5671003d613db665db
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 21:49:E2:A6:9E:15:AC:7B:B1:C1:85:E7:0F:B7:67:5A:E3:2B:8E:76
+	 SHA256: 8B:F2:5C:C2:35:1A:40:AF:7D:22:66:0A:76:3E:47:7A:07:B9:F2:7A:60:3E:3F:8F:A2:D5:19:BC:08:06:04:C0
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=EnterpriseC, L=Delhi, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 78 71 78 33 05 39 40 44   76 43 2D 4D 24 83 B4 4C  xqx3.9@DvC-M$..L
+0010: CD 61 85 11                                        .a..
+]
+]
+
+Certificate[2]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[3]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+Alias name: identity-private-key
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 4
+Certificate[1]:
+Owner: O=EnterpriseC, L=Delhi, C=IN
+Issuer: O=EnterpriseC, L=Delhi, C=IN
+Serial number: 56305f798977b630855ae035db1b0be1
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 72:AC:EA:A8:5E:5C:B4:2A:56:2D:6B:FF:67:0D:11:E3:0D:2F:62:D0
+	 SHA256: B7:1B:F6:4B:01:02:DD:23:42:4C:4C:1D:C7:90:38:4A:35:AA:FC:89:1B:E2:CC:3B:20:67:CF:5C:B1:92:85:43
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 255-bit Ed25519 key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 06                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 78 71 78 33 05 39 40 44   76 43 2D 4D 24 83 B4 4C  xqx3.9@DvC-M$..L
+0010: CD 61 85 11                                        .a..
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: E4 A1 9F 69 E9 11 95 B0   2C F6 41 D7 3E 62 C7 86  ...i....,.A.>b..
+0010: 7A 7F 43 FB                                        z.C.
+]
+]
+
+Certificate[2]:
+Owner: O=EnterpriseC, L=Delhi, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 5879604268d2aa5671003d613db665db
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 21:49:E2:A6:9E:15:AC:7B:B1:C1:85:E7:0F:B7:67:5A:E3:2B:8E:76
+	 SHA256: 8B:F2:5C:C2:35:1A:40:AF:7D:22:66:0A:76:3E:47:7A:07:B9:F2:7A:60:3E:3F:8F:A2:D5:19:BC:08:06:04:C0
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=EnterpriseC, L=Delhi, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 78 71 78 33 05 39 40 44   76 43 2D 4D 24 83 B4 4C  xqx3.9@DvC-M$..L
+0010: CD 61 85 11                                        .a..
+]
+]
+
+Certificate[3]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[4]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+Warning:
+The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseC\certificates\nodekeystore.jks -destkeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\EnterpriseC\certificates\nodekeystore.jks -deststoretype pkcs12".
+
+
+######## EnterpriseC / truststore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+Alias name: cordarootca
+Creation date: Nov 20, 2026
+Entry type: trustedCertEntry
+
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+
+######## Notary / sslkeystore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+Alias name: cordaclienttls
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 4
+Certificate[1]:
+Owner: O=Notary, L=Bengaluru, C=IN
+Issuer: O=Notary, L=Bengaluru, C=IN
+Serial number: 6a258527f48e2d25f91b647d75807e53
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 6D:30:00:F5:40:7D:F5:05:04:56:E9:FA:56:C8:BB:3E:55:BE:31:FB
+	 SHA256: 52:E3:57:33:CB:0D:70:C0:EE:71:DD:3C:EF:FE:6D:9D:92:80:4D:33:B2:C2:6F:DF:47:99:C9:50:41:11:03:84
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 05                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 5F 53 D0 BA 1E C0 98 AF   0C 62 5A 19 BB 43 4B 0B  _S.......bZ..CK.
+0010: 85 A0 E7 81                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:false
+  PathLen: undefined
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_Encipherment
+  Key_Agreement
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 4C C0 4E 1D 3A 14 C5 81   5D 9F 1C B8 74 87 57 40  L.N.:...]...t.W@
+0010: 90 98 D8 50                                        ...P
+]
+]
+
+Certificate[2]:
+Owner: O=Notary, L=Bengaluru, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 6639b46141874504890b2073bd7a8142
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: CB:5E:81:41:49:90:63:ED:15:1B:12:CA:1D:89:54:A5:27:D5:68:F4
+	 SHA256: DD:52:9D:7D:54:59:02:D6:88:16:63:37:5F:2D:A8:B2:09:2A:13:54:2D:5A:F2:92:5D:32:57:32:FB:02:FF:0D
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=Notary, L=Bengaluru, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 5F 53 D0 BA 1E C0 98 AF   0C 62 5A 19 BB 43 4B 0B  _S.......bZ..CK.
+0010: 85 A0 E7 81                                        ....
+]
+]
+
+Certificate[3]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[4]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+Warning:
+The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\Notary\certificates\sslkeystore.jks -destkeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\Notary\certificates\sslkeystore.jks -deststoretype pkcs12".
+
+
+######## Notary / nodekeystore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 2 entries
+
+Alias name: cordaclientca
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 3
+Certificate[1]:
+Owner: O=Notary, L=Bengaluru, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 493ebd8cc1955af3a52f64f49ee75726
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 0B:3B:E7:11:CB:D5:47:2A:D6:64:48:DA:C7:82:FB:A0:44:05:BE:1E
+	 SHA256: 5F:5A:25:3E:2D:F6:F9:80:1F:22:76:0B:68:F1:27:4B:10:2D:81:A0:10:93:08:8A:FA:3B:1B:DC:11:03:F2:5B
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=Notary, L=Bengaluru, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 58 A8 6E 88 BC CF 8A D6   CE F2 7E 2E 0D 50 D5 AA  X.n..........P..
+0010: BA 28 CB 68                                        .(.h
+]
+]
+
+Certificate[2]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[3]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+Alias name: identity-private-key
+Creation date: Nov 20, 2026
+Entry type: PrivateKeyEntry
+Certificate chain length: 4
+Certificate[1]:
+Owner: O=Notary, L=Bengaluru, C=IN
+Issuer: O=Notary, L=Bengaluru, C=IN
+Serial number: 463c24132142f35820b30d051faa427a
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 10:60:CE:22:C2:A4:50:A0:CF:28:E2:D1:06:18:7B:3F:96:7A:31:B4
+	 SHA256: 77:C0:97:42:11:BC:64:0A:A1:71:C5:4F:79:C3:61:40:82:30:62:09:94:B7:F5:2B:2A:42:34:13:1C:ED:EC:0D
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 255-bit Ed25519 key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 06                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 58 A8 6E 88 BC CF 8A D6   CE F2 7E 2E 0D 50 D5 AA  X.n..........P..
+0010: BA 28 CB 68                                        .(.h
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 68 3D 8D FA E9 B0 EC F4   31 E9 88 C1 32 8E FF 74  h=......1...2..t
+0010: 73 34 15 1C                                        s4..
+]
+]
+
+Certificate[2]:
+Owner: O=Notary, L=Bengaluru, C=IN
+Issuer: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Serial number: 493ebd8cc1955af3a52f64f49ee75726
+Valid from: Thu Nov 19 05:30:00 IST 2026 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 0B:3B:E7:11:CB:D5:47:2A:D6:64:48:DA:C7:82:FB:A0:44:05:BE:1E
+	 SHA256: 5F:5A:25:3E:2D:F6:F9:80:1F:22:76:0B:68:F1:27:4B:10:2D:81:A0:10:93:08:8A:FA:3B:1B:DC:11:03:F2:5B
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 04                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  clientAuth
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.30 Criticality=true
+NameConstraints: [
+    Permitted:   GeneralSubtrees:
+[
+   GeneralSubtree: [
+    GeneralName: O=Notary, L=Bengaluru, C=IN
+    Minimum: 0
+    Maximum: undefined    ]
+]
+
+    Excluded:   GeneralSubtrees:
+[]
+   ]
+
+#7: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 58 A8 6E 88 BC CF 8A D6   CE F2 7E 2E 0D 50 D5 AA  X.n..........P..
+0010: BA 28 CB 68                                        .(.h
+]
+]
+
+Certificate[3]:
+Owner: CN=Corda Doorman CA, O=R3 HoldCo LLC, OU=Corda, L=New York, C=US
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 1d56fac1ddd11e12
+Valid from: Tue Jul 10 05:30:00 IST 2018 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 22:79:19:10:99:B2:E5:26:F1:30:BE:84:56:C1:B4:34:06:9A:E3:94
+	 SHA256: 57:87:1D:23:A2:DD:B0:11:98:0B:27:FB:12:FF:08:30:51:78:F1:DE:76:26:12:5B:2E:5C:63:1D:0D:3A:A7:F7
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 1.3.6.1.4.1.50530.1.1 Criticality=false
+0000: 02 01 01                                           ...
+
+
+#2: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+#3: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#4: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#5: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#6: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: EB EE 2E 30 15 29 40 AE   19 98 1E D8 6F E3 7D 7F  ...0.)@.....o...
+0010: 07 A2 C2 13                                        ....
+]
+]
+
+Certificate[4]:
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+
+
+Warning:
+The JKS keystore uses a proprietary format. It is recommended to migrate to PKCS12 which is an industry standard format using "keytool -importkeystore -srckeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\Notary\certificates\nodekeystore.jks -destkeystore C:\Users\LENOVO\Downloads\Corda_Lab_Codes_15_Experiments\gagan-secure-p2p-corda\build\nodes\Notary\certificates\nodekeystore.jks -deststoretype pkcs12".
+
+
+######## Notary / truststore.jks ########
+Keystore type: JKS
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+Alias name: cordarootca
+Creation date: Nov 20, 2026
+Entry type: trustedCertEntry
+
+Owner: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Issuer: C=UK, L=London, OU=corda, O=R3, CN=Corda Node Root CA
+Serial number: 7057b4a9cb6a4ae7
+Valid from: Mon May 22 05:30:00 IST 2017 until: Thu May 20 05:30:00 IST 2027
+Certificate fingerprints:
+	 SHA1: 90:B3:71:C0:B1:C6:AF:94:9E:22:63:CD:2B:A3:89:2F:A8:EF:27:92
+	 SHA256: 20:34:B7:A3:FF:76:D1:2C:15:F5:21:AF:17:41:1D:B5:B2:6C:5A:75:C8:6D:CD:E1:B0:93:7E:11:03:E3:F3:F4
+Signature algorithm name: SHA256withECDSA
+Subject Public Key Algorithm: 256-bit EC (secp256r1) key
+Version: 3
+
+Extensions: 
+
+#1: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:true
+  PathLen: no limit
+]
+
+#2: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+  anyExtendedKeyUsage
+]
+
+#3: ObjectId: 2.5.29.15 Criticality=false
+KeyUsage [
+  DigitalSignature
+  Key_CertSign
+  Crl_Sign
+]
+
+#4: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 7C AE A9 DF B9 48 01 2B   13 89 0B 9A E6 45 85 1C  .....H.+.....E..
+0010: 39 17 07 73                                        9..s
+]
+]
+
+
+
+*******************************************
+*******************************************
+
+

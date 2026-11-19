@@ -1,0 +1,25 @@
+// RPC demo client - Gagan N (24BTRBT013)
+dependencies {
+    implementation "$corda_release_group:corda-rpc:$corda_release_version"
+    implementation "$corda_core_release_group:corda-core:$corda_core_release_version"
+    implementation project(":contracts")
+    implementation project(":workflows")
+    implementation "org.apache.logging.log4j:log4j-slf4j2-impl:${log4j_version}"
+    implementation "org.slf4j:jul-to-slf4j:$slf4j_version"
+}
+
+// gradlew :clients:runDemo -Pmode=all   (modes: all, networkmap, send, ack, read, privacy, untrusted, ping, bench)
+task runDemo(type: JavaExec, dependsOn: assemble) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.securep2p.clients.DemoClient'
+    args project.findProperty('mode') ?: 'all'
+    jvmArgs = rootProject.ext.test_add_opens
+    standardInput = System.in
+}
+
+// Writes the runtime classpath so the demo can be launched quickly with plain `java -cp`.
+task writeClasspath(dependsOn: assemble) {
+    doLast {
+        file("$buildDir/classpath.txt").text = sourceSets.main.runtimeClasspath.files.join(File.pathSeparator)
+    }
+}
